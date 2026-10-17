@@ -31,5 +31,7 @@
 	},
 	"dependencies": {
 		"jspdf": "^4.2.1"
-	}
+	},
+	"license": "MIT",
+	"packageManager": "pnpm@11.3.0"
 }
