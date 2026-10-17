@@ -1,0 +1,121 @@
+condition:
+  id: adhd
+  name: ADHD traits
+  blurb: Attention, organisation, restlessness and impulsivity.
+
+scales:
+  - id: asrs6
+    name: ASRS v1.1 Screener (Part A)
+    track: validated
+    source: >-
+      Kessler RC, Adler L, et al. The World Health Organization Adult ADHD Self-Report Scale (ASRS).
+      Psychol Med 2005;35:245-256. Wording, options and shading checked against the ASRS v1.1
+      Symptom Checklist PDF (research/sources/ASRS-v1.1-symptom-checklist.pdf), 2026-10-18.
+    timeframe: past 6 months
+    scoring: count
+    cutoff: 4
+    bands:
+      - { min: 0, label: Below screening threshold, level: 0 }
+      - { min: 4, label: Symptoms highly consistent with adult ADHD, level: 3 }
+    items:
+      - id: asrs.1
+        text: How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?
+        options: &freq5 [Never, Rarely, Sometimes, Often, Very Often]
+        counts_from: 2
+      - id: asrs.2
+        text: How often do you have difficulty getting things in order when you have to do a task that requires organization?
+        options: *freq5
+        counts_from: 2
+      - id: asrs.3
+        text: How often do you have problems remembering appointments or obligations?
+        options: *freq5
+        counts_from: 2
+      - id: asrs.4
+        text: When you have a task that requires a lot of thought, how often do you avoid or delay getting started?
+        options: *freq5
+        counts_from: 3
+      - id: asrs.5
+        text: How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?
+        options: *freq5
+        counts_from: 3
+      - id: asrs.6
+        text: How often do you feel overly active and compelled to do things, like you were driven by a motor?
+        options: *freq5
+        counts_from: 3
+
+  # Part B has no published total score. It is asked for context when Part A is
+  # near or above the cutoff (routing choice, not a scoring rule).
+  - id: asrsb
+    name: ASRS v1.1 Symptom Checklist (Part B)
+    track: validated
+    source: >-
+      ASRS v1.1 Symptom Checklist, Part B. "No total score or diagnostic likelihood is utilized for the
+      twelve questions." Checked against research/sources/ASRS-v1.1-symptom-checklist.pdf, 2026-10-18.
+    timeframe: past 6 months
+    scoring: none
+    opens_if: { scale: asrs6, min: 3 }
+    items:
+      - { id: asrs.7, options: *freq5, text: "How often do you make careless mistakes when you have to work on a boring or difficult project?" }
+      - { id: asrs.8, options: *freq5, text: "How often do you have difficulty keeping your attention when you are doing boring or repetitive work?" }
+      - { id: asrs.9, options: *freq5, text: "How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly?" }
+      - { id: asrs.10, options: *freq5, text: "How often do you misplace or have difficulty finding things at home or at work?" }
+      - { id: asrs.11, options: *freq5, text: "How often are you distracted by activity or noise around you?" }
+      - { id: asrs.12, options: *freq5, text: "How often do you leave your seat in meetings or other situations in which you are expected to remain seated?" }
+      - { id: asrs.13, options: *freq5, text: "How often do you feel restless or fidgety?" }
+      - { id: asrs.14, options: *freq5, text: "How often do you have difficulty unwinding and relaxing when you have time to yourself?" }
+      - { id: asrs.15, options: *freq5, text: "How often do you find yourself talking too much when you are in social situations?" }
+      - { id: asrs.16, options: *freq5, text: "When you’re in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?" }
+      - { id: asrs.17, options: *freq5, text: "How often do you have difficulty waiting your turn in situations when turn taking is required?" }
+      - { id: asrs.18, options: *freq5, text: "How often do you interrupt others when they are busy?" }
+
+  - id: adhdx
+    name: Everyday attention (our own items)
+    track: experimental
+    source: >-
+      Original items written 2026-10-18. IRT parameters are provisional guesses, not calibrated on any
+      data. Not reviewed by a clinician yet.
+    timeframe: last 14 days
+    stem: In the last 14 days, on how many days did you...
+    scoring: irt
+    max_items: 10
+    items:
+      - id: adhdx.drift
+        text: lose track of what you were doing because something else grabbed your attention (a notification, a reel, another tab)?
+        options: &days5 [Not at all, 1-2 days, 3-5 days, 6-9 days, 10 or more days]
+        irt: { a: 1.8, b: [-0.6, 0.2, 0.9, 1.6] }
+      - id: adhdx.delay
+        text: put off something you needed to do until the last moment, or past it?
+        options: *days5
+        irt: { a: 1.5, b: [-0.8, 0.0, 0.8, 1.5] }
+      - id: adhdx.misplace
+        text: lose or misplace something you needed, like your keys, phone, wallet or ID card?
+        options: *days5
+        irt: { a: 1.4, b: [0.0, 0.8, 1.5, 2.2] }
+      - id: adhdx.forget
+        text: forget something you had said you would do, like a reply, an errand or a call back?
+        options: *days5
+        irt: { a: 1.7, b: [-0.3, 0.5, 1.2, 1.9] }
+      - id: adhdx.restless
+        text: feel restless when you had to stay seated or wait, like in a queue, a class, a meeting or traffic?
+        options: *days5
+        irt: { a: 1.3, b: [-0.4, 0.4, 1.1, 1.8] }
+      - id: adhdx.reread
+        text: reread the same paragraph or message because your mind had wandered off?
+        options: *days5
+        irt: { a: 1.6, b: [-0.7, 0.1, 0.8, 1.5] }
+      - id: adhdx.interrupt
+        text: interrupt someone, or answer before they had finished their question?
+        options: *days5
+        irt: { a: 1.2, b: [0.2, 1.0, 1.7, 2.4] }
+      - id: adhdx.halfdone
+        text: leave a message, form or task half-done and not come back to it?
+        options: *days5
+        irt: { a: 1.6, b: [-0.2, 0.6, 1.3, 2.0] }
+      - id: adhdx.late
+        text: lose track of time so that you ended up late or rushing?
+        options: *days5
+        irt: { a: 1.5, b: [0.0, 0.8, 1.5, 2.2] }
+      - id: adhdx.juggle
+        text: start several things and finish few of them?
+        options: *days5
+        irt: { a: 1.7, b: [-0.1, 0.7, 1.4, 2.1] }

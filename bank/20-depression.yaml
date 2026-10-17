@@ -1,0 +1,53 @@
+condition:
+  id: depression
+  name: Depression
+  blurb: Low mood, loss of interest, and related changes over the last two weeks.
+
+scales:
+  # PHQ-2 is items 1-2 of the PHQ-9 (screen). Item 9 is always asked, for safety,
+  # even when the screen is negative.
+  - id: phq9
+    name: PHQ-9
+    track: validated
+    source: >-
+      Kroenke K, Spitzer RL, Williams JB. The PHQ-9. J Gen Intern Med 2001;16:606-613. PHQ-2 screen:
+      Kroenke 2003, cutoff 3. Wording checked against the phqscreeners.com PDF
+      (research/sources/PHQ-9_English.pdf), 2026-10-18. "No permission required to reproduce,
+      translate, display or distribute."
+    timeframe: last 2 weeks
+    stem: Over the last 2 weeks, how often have you been bothered by any of the following problems?
+    scoring: sum
+    screen: { items: 2, cutoff: 3 }
+    cutoff: 10
+    bands:
+      - { min: 0, label: Minimal, level: 0 }
+      - { min: 5, label: Mild, level: 1 }
+      - { min: 10, label: Moderate, level: 2 }
+      - { min: 15, label: Moderately severe, level: 3 }
+      - { min: 20, label: Severe, level: 4 }
+    items:
+      - { id: phq.1, options: &phq4 [Not at all, Several days, More than half the days, Nearly every day], text: "Little interest or pleasure in doing things" }
+      - { id: phq.2, options: *phq4, text: "Feeling down, depressed, or hopeless" }
+      - { id: phq.3, options: *phq4, text: "Trouble falling or staying asleep, or sleeping too much" }
+      - { id: phq.4, options: *phq4, text: "Feeling tired or having little energy" }
+      - { id: phq.5, options: *phq4, text: "Poor appetite or overeating" }
+      - { id: phq.6, options: *phq4, text: "Feeling bad about yourself — or that you are a failure or have let yourself or your family down" }
+      - { id: phq.7, options: *phq4, text: "Trouble concentrating on things, such as reading the newspaper or watching television" }
+      - { id: phq.8, options: *phq4, text: "Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual" }
+      - id: phq.9
+        options: *phq4
+        text: Thoughts that you would be better off dead or of hurting yourself in some way
+        always: true
+        risk: { banner: 1, pause: 3 }
+
+  - id: phqimpact
+    name: PHQ-9 difficulty question
+    track: validated
+    source: PHQ-9 final question, same source as above.
+    timeframe: last 2 weeks
+    scoring: none
+    opens_if: { scale: phq9, min: 1 }
+    items:
+      - id: phq.impact
+        text: If you checked off any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?
+        options: [Not difficult at all, Somewhat difficult, Very difficult, Extremely difficult]
